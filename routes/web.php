@@ -13,6 +13,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::get('/', [PostController::class, 'index'])->name('posts.index');
+Route::get('/articles', [PostController::class, 'archive'])->name('posts.archive');
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
