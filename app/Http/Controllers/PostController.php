@@ -14,7 +14,7 @@ class PostController extends Controller
         $posts = Post::with('user')
             ->withCount('comments')
             ->latest()
-            ->paginate(7);
+            ->paginate(9);
 
         return Inertia::render('PostsPage', [
             'posts' => $posts,
