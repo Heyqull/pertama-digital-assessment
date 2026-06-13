@@ -92,24 +92,124 @@ export default function PostsPage({ posts }) {
     const postList = posts.data || [];
     const isFirstPage = posts.current_page === 1;
 
-    const featuredPost = isFirstPage && postList.length > 0 ? postList[0] : null;
-    const gridPosts = isFirstPage && postList.length > 0 ? postList.slice(1) : postList;
+    const featuredPosts = isFirstPage && postList.length > 0 ? postList.slice(0, Math.min(3, postList.length)) : [];
+    const gridPosts = isFirstPage && postList.length > 0 ? postList.slice(featuredPosts.length) : postList;
+
+    const [activeSlide, setActiveSlide] = React.useState(0);
+    const [isHovered, setIsHovered] = React.useState(false);
+
+    React.useEffect(() => {
+        if (featuredPosts.length <= 1 || isHovered) return;
+        const interval = setInterval(() => {
+            setActiveSlide((prev) => (prev + 1) % featuredPosts.length);
+        }, 3000);
+        return () => clearInterval(interval);
+    }, [featuredPosts.length, isHovered]);
 
     return (
         <Layout>
             <div className="bg-[#f8fafc] min-h-screen">
-                <div className="relative bg-[#040a18] bg-gradient-to-r from-[#090d16] via-[#0e162b] to-[#090d16] text-white pt-36 pb-24 rounded-b-[2rem] md:rounded-b-[3rem] shadow-xl overflow-hidden">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-[#f97316] to-[#facc15] opacity-[0.04] blur-[120px] rounded-full pointer-events-none" />
-                    
-                    <div className="container mx-auto px-4 max-w-6xl text-center relative z-10">
-                        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-white via-slate-100 to-white bg-clip-text text-transparent">
-                            Blog Insights
-                        </h1>
-                        <p className="text-slate-400 text-base md:text-lg max-w-lg mx-auto font-medium leading-relaxed">
-                            Explore Our Latest Articles and Industry Insights
-                        </p>
+                {isFirstPage && featuredPosts.length > 0 ? (
+                    <div
+                        className="relative w-full h-[520px] md:h-[620px] bg-slate-900 rounded-b-[2.5rem] md:rounded-b-[3.5rem] shadow-xl overflow-hidden group"
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                    >
+                        {featuredPosts.map((post, idx) => {
+                            const design = getPostDesign(post, idx);
+                            const isActive = idx === activeSlide;
+                            return (
+                                <div
+                                    key={post.id}
+                                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                                        isActive ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
+                                    }`}
+                                >
+                                    <img
+                                        src={design.image}
+                                        alt={post.title}
+                                        className="absolute inset-0 w-full h-full object-cover select-none"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-transparent md:bg-gradient-to-r md:from-slate-950/90 md:via-slate-950/30 md:to-transparent" />
+                                    
+                                    <div className="absolute inset-0 z-20 pt-36 pb-16 flex flex-col justify-end">
+                                        <Link href={'/posts/' + post.id} className="container mx-auto px-4 max-w-6xl h-full flex flex-col justify-end text-white select-none">
+                                            <span className="text-xs font-bold tracking-wider text-orange-400 mb-2 uppercase">
+                                                Featured
+                                            </span>
+                                            <h2 className="text-2xl md:text-4xl lg:text-5xl font-extrabold leading-tight text-white hover:text-orange-400 transition-colors max-w-3xl">
+                                                {post.title}
+                                            </h2>
+                                            <p className="text-slate-300 text-sm md:text-base mt-4 line-clamp-2 leading-relaxed max-w-xl">
+                                                {post.content}
+                                            </p>
+                                            <div className="flex items-center gap-3 mt-8">
+                                                <img
+                                                    src={design.avatar}
+                                                    alt={post.user?.name}
+                                                    className="w-10 h-10 rounded-full object-cover border border-white/10"
+                                                />
+                                                <div>
+                                                    <p className="text-white font-bold text-sm leading-none">
+                                                        {post.user?.name}
+                                                    </p>
+                                                    <p className="text-slate-400 text-xs mt-1">
+                                                        {design.role}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                </div>
+                            );
+                        })}
+
+                        {featuredPosts.length > 1 && (
+                            <>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setActiveSlide((prev) => (prev + 1) % featuredPosts.length);
+                                    }}
+                                    className="absolute right-6 md:right-12 top-1/2 -translate-y-1/2 flex items-center justify-center text-white hover:text-orange-400 transition-all hover:scale-110 z-30"
+                                    title="Next Slide"
+                                >
+                                    <span className="text-3xl md:text-5xl font-light">→</span>
+                                </button>
+
+                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-30">
+                                    {featuredPosts.map((_, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setActiveSlide(idx);
+                                            }}
+                                            className={`h-2 rounded-full transition-all duration-300 ${
+                                                idx === activeSlide ? 'w-5 bg-orange-500' : 'w-2 bg-white/40 hover:bg-white/70'
+                                            }`}
+                                        />
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </div>
-                </div>
+                ) : (
+                    !isFirstPage ? null : (
+                        <div className="relative bg-[#040a18] bg-gradient-to-r from-[#090d16] via-[#0e162b] to-[#090d16] text-white pt-36 pb-24 rounded-b-[2rem] md:rounded-b-[3rem] shadow-xl overflow-hidden">
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-to-tr from-[#f97316] to-[#facc15] opacity-[0.04] blur-[120px] rounded-full pointer-events-none" />
+                            
+                            <div className="container mx-auto px-4 max-w-6xl text-center relative z-10">
+                                <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-4 bg-gradient-to-r from-white via-slate-100 to-white bg-clip-text text-transparent">
+                                    Blog Insights
+                                </h1>
+                                <p className="text-slate-400 text-base md:text-lg max-w-lg mx-auto font-medium leading-relaxed">
+                                    Explore Our Latest Articles and Industry Insights
+                                </p>
+                            </div>
+                        </div>
+                    )
+                )}
 
                 <div className="container mx-auto px-4 max-w-6xl py-16">
                     {postList.length === 0 ? (
@@ -121,91 +221,9 @@ export default function PostsPage({ posts }) {
                         </div>
                     ) : (
                         <div className="space-y-16">
-                            {featuredPost && (() => {
-                                const design = getPostDesign(featuredPost, 0);
-                                return (
-                                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center bg-white p-6 md:p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-                                        <div className="lg:col-span-6 overflow-hidden rounded-2xl aspect-[16/10] lg:aspect-auto lg:h-[380px] w-full bg-slate-100 relative group">
-                                            <img
-                                                src={design.image}
-                                                alt={featuredPost.title}
-                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                            />
-                                        </div>
-                                        <div className="lg:col-span-6 flex flex-col justify-center">
-                                            <div className="flex items-center gap-3">
-                                                <span className={`px-3 py-1 rounded-full text-xs font-bold border ${design.categoryBg}`}>
-                                                    {design.category}
-                                                </span>
-                                                <span className="text-slate-400 text-xs font-semibold">
-                                                    {new Date(featuredPost.created_at).toLocaleDateString('en-US', {
-                                                        month: 'short',
-                                                        day: 'numeric',
-                                                        year: 'numeric'
-                                                    })}
-                                                </span>
-                                            </div>
-
-                                            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mt-4 leading-tight group-hover:text-orange-500 transition-colors">
-                                                <Link href={'/posts/' + featuredPost.id} className="hover:text-orange-500 transition-colors">
-                                                    {featuredPost.title}
-                                                </Link>
-                                            </h2>
-
-                                            <p className="text-slate-500 mt-4 text-sm md:text-base leading-relaxed line-clamp-3">
-                                                {featuredPost.content}
-                                            </p>
-
-                                            <div className="flex items-center justify-between mt-6 pt-6 border-t border-slate-100">
-                                                <div className="flex items-center gap-3">
-                                                    <img
-                                                        src={design.avatar}
-                                                        alt={featuredPost.user?.name}
-                                                        className="w-10 h-10 rounded-full object-cover"
-                                                    />
-                                                    <div>
-                                                        <p className="text-slate-900 font-semibold text-sm leading-tight">
-                                                            {featuredPost.user?.name}
-                                                        </p>
-                                                        <p className="text-slate-400 text-xs mt-0.5">
-                                                            {design.role}
-                                                        </p>
-                                                    </div>
-                                                </div>
-
-                                                <div className="flex items-center gap-3">
-                                                    <span className="text-slate-400 text-xs font-medium bg-slate-50 border border-slate-100 rounded-full px-3 py-1">
-                                                        {featuredPost.comments_count ?? 0} comments
-                                                    </span>
-
-                                                    {canEdit(featuredPost) && (
-                                                        <Link
-                                                            href={'/posts/' + featuredPost.id + '/edit'}
-                                                            className="p-2 border border-slate-100 hover:border-orange-500/20 hover:bg-orange-50 text-slate-400 hover:text-orange-500 rounded-full transition-all"
-                                                            title="Edit Post"
-                                                        >
-                                                            <Edit className="w-4 h-4" />
-                                                        </Link>
-                                                    )}
-                                                    {canDelete(featuredPost) && (
-                                                        <button
-                                                            onClick={() => handleDelete(featuredPost.id)}
-                                                            className="p-2 border border-slate-100 hover:border-red-500/20 hover:bg-red-50 text-slate-400 hover:text-red-500 rounded-full transition-all"
-                                                            title="Delete Post"
-                                                        >
-                                                            <Trash2 className="w-4 h-4" />
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })()}
-
                             {gridPosts.length > 0 && (
                                 <div className="space-y-8">
-                                    {featuredPost && (
+                                    {featuredPosts.length > 0 && (
                                         <h3 className="text-xl font-bold text-slate-900 tracking-tight border-b border-slate-100 pb-4">
                                             Latest Articles
                                         </h3>
@@ -303,13 +321,13 @@ export default function PostsPage({ posts }) {
                             {posts.last_page > 1 && (
                                 <div className="flex items-center justify-center gap-3 pt-8 border-t border-slate-100">
                                     {posts.current_page == 1 ? (
-                                        <span className="border border-slate-200 rounded-full px-4 py-2 text-xs font-semibold text-slate-300 cursor-not-allowed select-none bg-white">
+                                        <span className="border border-slate-200 rounded-full px-4 py-2 text-xs font-semibold text-slate-300 cursor-not-allowed select-none bg-white inline-block w-32 text-center">
                                             Previous
                                         </span>
                                     ) : (
                                         <Link
                                             href={'/?page=' + (posts.current_page - 1)}
-                                            className="border border-slate-200 rounded-full px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 transition-all shadow-sm"
+                                            className="border border-slate-200 rounded-full px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 transition-all shadow-sm inline-block w-32 text-center"
                                         >
                                             Previous
                                         </Link>
@@ -320,13 +338,13 @@ export default function PostsPage({ posts }) {
                                     </span>
 
                                     {posts.current_page == posts.last_page ? (
-                                        <span className="border border-slate-200 rounded-full px-4 py-2 text-xs font-semibold text-slate-300 cursor-not-allowed select-none bg-white">
+                                        <span className="border border-slate-200 rounded-full px-4 py-2 text-xs font-semibold text-slate-300 cursor-not-allowed select-none bg-white inline-block w-32 text-center">
                                             Next
                                         </span>
                                     ) : (
                                         <Link
                                             href={'/?page=' + (posts.current_page + 1)}
-                                            className="border border-slate-200 rounded-full px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 transition-all shadow-sm"
+                                            className="border border-slate-200 rounded-full px-4 py-2 text-xs font-semibold text-slate-700 bg-white hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 transition-all shadow-sm inline-block w-32 text-center"
                                         >
                                             Next
                                         </Link>
