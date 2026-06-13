@@ -15,6 +15,20 @@ export default function PostDetailPage({ post }) {
     });
 
     const [showDeleteModal, setShowDeleteModal] = React.useState(false);
+    const [scrollProgress, setScrollProgress] = React.useState(0);
+
+    React.useEffect(() => {
+        const handleScroll = () => {
+            const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (totalHeight > 0) {
+                const progress = (window.scrollY / totalHeight) * 100;
+                setScrollProgress(progress);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const handleDelete = () => {
         setShowDeleteModal(true);
@@ -41,6 +55,12 @@ export default function PostDetailPage({ post }) {
 
     return (
         <Layout>
+            <div className="fixed top-0 left-0 w-full h-1 bg-slate-800/10 z-[100] pointer-events-none">
+                <div
+                    className="h-full bg-orange-500 transition-all duration-75 ease-out"
+                    style={{ width: `${scrollProgress}%` }}
+                />
+            </div>
             <div className="bg-[#f8fafc] min-h-screen">
                 <div className="max-w-4xl mx-auto px-4 py-8">
                     <Link
