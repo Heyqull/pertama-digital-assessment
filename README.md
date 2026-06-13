@@ -1,59 +1,89 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Coding Challenge - Pertama Blog 🚀
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A premium blogging platform built as part of a coding assessment.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 1. Frontend Tech Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **React**: Chosen for building a highly modular, component-based user interface. It powers the single-page dashboard application, interactive states, and client-side rendering.
+- **Inertia.js**: Serves as the modern connector, allowing us to build a single-page React app using classic server-side routing and controllers. It eliminates the need for a separate SPA API, client-side routers, or custom token authorization systems.
+- **Tailwind CSS**: A utility-first CSS framework used to build our custom design system, handling gradients, HSL colors, responsive grids, hover animations, and custom styling parameters.
+- **Lucide React**: Provides unified, clean vector-based icons throughout the dashboard interfaces (e.g., search, edit, delete, comments).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 2. Backend Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- **Laravel (PHP)**: Used as the robust MVC framework to handle routing, authentication middleware, request validation, database models, and server-side responses.
+- **SQLite Database**: A lightweight, serverless, file-based SQL database configured locally to store tables, relationships, and seed data.
+- **Eloquent ORM**: Laravel's database mapper used to manage relations (User-Post, Post-Comment) and query builders with eager loading.
+- **Laravel Session Auth**: Handles out-of-the-box secure session management and authentication validation.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 3. Core Necessary Features
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- User registration and login
+- Create a new blog post
+- Edit an existing blog post
+- Delete a blog post
+- View a list of all blog posts
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 4. Bonus Points
 
-## Contributing
+- Implement user roles (admin, editor, reader)
+- Add comments to blog posts
+- Implement pagination for blog posts
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 5. Extra Added Features
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Dynamic Bento Hero Carousel**: An interactive, touch-friendly featured carousel slider at the top of the homepage that auto-scrolls every 3 seconds and pauses on hover.
+- **All Articles Archive**: A dedicated archive page (`/articles`) listing all published posts, set to a larger layout grid of 20 items per page.
+- **Scroll Reading Progress Bar**: A sleek orange reading progress bar fixed at the very top of the post details view that tracks how far a user has scrolled down the article.
+- **Custom Confirmation Modal Overlays**: Designed a custom React confirmation alert warning dialog for post deletion, replacing standard browser alert popups with a polished UI matching the theme.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Installation & Setup
 
-## License
+1. **Install Dependencies**:
+   ```bash
+   composer install
+   npm install
+   ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+2. **Configure Environment**:
+   Copy `.env.example` to `.env` and configure your SQLite database:
+   ```env
+   DB_CONNECTION=sqlite
+   ```
+
+3. **Launch Local Server**:
+   Run the backend development server:
+   ```bash
+   php artisan serve
+   ```
+   Run Vite development server:
+   ```bash
+   npm run dev
+   ```
+
+4. **Build Production Assets**:
+   ```bash
+   npm run build
+   ```
+
+---
+
+## Test Accounts
+
+The database seeder prepares the following default test accounts (all passwords are `password`):
+
+- **Admin**: `admin@pertamadigital.com` (Has full access to create, edit, and delete any posts)
+- **Editor**: `editor@pertamadigital.com` (Can write posts and edit their own posts)
+- **Reader**: `reader@pertamadigital.com` (Can view posts and write comments)
