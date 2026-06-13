@@ -9,6 +9,7 @@ import PostsPage from './pages/PostsPage';
 import PostDetailPage from './pages/PostDetailPage';
 import CreatePostPage from './pages/CreatePostPage';
 import EditPostPage from './pages/EditPostPage';
+import ArchivePage from './pages/ArchivePage';
 
 const pages = {
     LoginPage,
@@ -16,7 +17,8 @@ const pages = {
     PostsPage,
     PostDetailPage,
     CreatePostPage,
-    EditPostPage
+    EditPostPage,
+    ArchivePage
 };
 
 createInertiaApp({

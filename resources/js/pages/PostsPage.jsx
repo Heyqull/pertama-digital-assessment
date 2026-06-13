@@ -355,6 +355,29 @@ export default function PostsPage({ posts }) {
                     )}
                 </div>
             </div>
+
+            <div className="bg-[#0b1329] text-white py-20 relative overflow-hidden rounded-t-[2.5rem] md:rounded-t-[3.5rem]">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-gradient-to-tr from-[#f97316] to-[#facc15] opacity-[0.06] blur-[100px] rounded-full pointer-events-none" />
+                <div className="container mx-auto px-4 max-w-4xl text-center relative z-10">
+                    <h3 className="text-2xl md:text-3xl font-extrabold tracking-tight mb-4 text-white">
+                        Hungry for more insights?
+                    </h3>
+                    <br />
+                    <Link
+                        href="/articles"
+                        className="inline-flex items-center justify-center bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-full shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 transition-all "
+                    >
+                        Browse more article
+                    </Link>
+                </div>
+            </div>
+
+            <footer className="bg-[#070c1a] border-t border-white/5 py-8 text-center text-slate-500 text-xs font-semibold">
+                <div className="container mx-auto px-4">
+                    <p>© {new Date().getFullYear()} Pertama Blog. All rights reserved.</p>
+                </div>
+            </footer>
+
             <DeleteConfirmModal
                 isOpen={deletePostId !== null}
                 onClose={() => setDeletePostId(null)}

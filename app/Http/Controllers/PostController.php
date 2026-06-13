@@ -21,6 +21,18 @@ class PostController extends Controller
         ]);
     }
 
+    public function archive()
+    {
+        $posts = Post::with('user')
+            ->withCount('comments')
+            ->latest()
+            ->paginate(20);
+
+        return Inertia::render('ArchivePage', [
+            'posts' => $posts,
+        ]);
+    }
+
     public function show($id)
     {
         $post = Post::with(['user', 'comments.user'])->findOrFail($id);
