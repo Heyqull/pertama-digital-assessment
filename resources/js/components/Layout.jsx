@@ -4,12 +4,12 @@ import { usePage } from '@inertiajs/react';
 
 export default function Layout({ children }) {
     const { component } = usePage();
-    const isHome = component === 'PostsPage';
+    const isFullWidth = component === 'PostsPage' || component === 'ArchivePage';
 
     return (
-        <div className="min-h-screen bg-[#f8fafc] text-[#0f172a] font-sans antialiased pb-16">
+        <div className="min-h-screen bg-[#f8fafc] text-[#0f172a] font-sans antialiased">
             <Navbar />
-            {isHome ? (
+            {isFullWidth ? (
                 <main>
                     {children}
                 </main>
