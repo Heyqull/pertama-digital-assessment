@@ -18,64 +18,69 @@ export default function RegisterPage() {
 
     return (
         <Layout>
-            <div className="flex justify-center items-center min-h-[70vh]">
-                <div className="w-full max-w-sm border rounded-lg p-6 bg-white shadow-sm">
-                    <h2 className="text-2xl font-bold mb-2">Register</h2>
-                    <p className="text-sm text-gray-500 mb-6">Create a new account. New users get the Reader role by default.</p>
+            <div className="flex justify-center items-center min-h-[75vh] bg-[#f8fafc]">
+                <div className="w-full max-w-md border border-slate-100 rounded-3xl p-8 md:p-10 bg-white shadow-sm">
+                    <div className="flex flex-col items-center mb-8">
+                        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-tr from-[#f97316] to-[#facc15] shadow-lg shadow-orange-500/20 mb-3">
+                            <span className="h-3.5 w-3.5 rounded-full bg-white animate-pulse" />
+                        </span>
+                        <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Create Account</h2>
+                        <p className="text-xs text-slate-400 font-semibold mt-1">Get started to share insights and write comments.</p>
+                    </div>
 
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmit} className="space-y-5">
                         {errorList.length > 0 && (
-                            <div className="text-sm text-red-500 bg-red-50 border border-red-200 rounded px-3 py-2 space-y-1">
+                            <div className="text-xs text-red-500 bg-red-50 border border-red-100 rounded-2xl px-4 py-3 space-y-1 font-semibold">
                                 {errorList.map((err, i) => (
                                     <p key={i}>{err}</p>
                                 ))}
                             </div>
                         )}
                         <div>
-                            <label className="text-sm font-medium block mb-1">Name</label>
+                            <label className="text-xs font-bold text-slate-700 block mb-2 uppercase tracking-wider">Full Name</label>
                             <input
                                 type="text"
                                 placeholder="Your name"
                                 value={data.name}
                                 onChange={e => setData('name', e.target.value)}
                                 required
-                                className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                                className="w-full border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-slate-50 placeholder-slate-400"
                             />
                         </div>
                         <div>
-                            <label className="text-sm font-medium block mb-1">Email</label>
+                            <label className="text-xs font-bold text-slate-700 block mb-2 uppercase tracking-wider">Email Address</label>
                             <input
                                 type="email"
                                 placeholder="you@example.com"
                                 value={data.email}
                                 onChange={e => setData('email', e.target.value)}
                                 required
-                                className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                                className="w-full border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-slate-50 placeholder-slate-400"
                             />
                         </div>
                         <div>
-                            <label className="text-sm font-medium block mb-1">Password</label>
+                            <label className="text-xs font-bold text-slate-700 block mb-2 uppercase tracking-wider">Password</label>
                             <input
                                 type="password"
                                 placeholder="Min. 8 characters"
                                 value={data.password}
                                 onChange={e => setData('password', e.target.value)}
                                 required
-                                className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-black"
+                                className="w-full border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all bg-slate-50 placeholder-slate-400"
                             />
                         </div>
                         <button
                             type="submit"
                             disabled={processing}
-                            className="w-full bg-black text-white rounded py-2 text-sm font-medium hover:bg-gray-800 disabled:opacity-50"
+                            className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-full py-3 text-sm font-bold shadow-md shadow-orange-500/10 hover:shadow-orange-500/20 transition-all disabled:opacity-50 mt-2"
                         >
                             {processing ? 'Creating account...' : 'Create Account'}
                         </button>
                     </form>
 
-                    <p className="text-sm text-gray-500 text-center mt-4">
+                    <p className="text-xs text-slate-400 text-center mt-6 font-semibold">
                         Already have an account?{' '}
-                        <Link href="/login" className="text-black underline">Login</Link>
+                        <Link href="/login" className="text-orange-500 hover:underline font-bold ml-1">Login here</Link>
                     </p>
                 </div>
             </div>
