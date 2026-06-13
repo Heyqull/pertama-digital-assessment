@@ -21,9 +21,6 @@ export default function RegisterPage() {
             <div className="flex justify-center items-center min-h-[75vh] bg-[#f8fafc]">
                 <div className="w-full max-w-md border border-slate-100 rounded-3xl p-8 md:p-10 bg-white shadow-sm">
                     <div className="flex flex-col items-center mb-8">
-                        <span className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-tr from-[#f97316] to-[#facc15] shadow-lg shadow-orange-500/20 mb-3">
-                            <span className="h-3.5 w-3.5 rounded-full bg-white animate-pulse" />
-                        </span>
                         <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">Create Account</h2>
                         <p className="text-xs text-slate-400 font-semibold mt-1">Get started to share insights and write comments.</p>
                     </div>
