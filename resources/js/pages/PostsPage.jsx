@@ -26,14 +26,6 @@ export default function PostsPage({ posts }) {
                             {posts.total ?? 0} post{posts.total != 1 ? 's' : ''} total
                         </p>
                     </div>
-                    {user && (user.role == 'admin' || user.role == 'editor') && (
-                        <Link
-                            href="/posts/create"
-                            className="bg-black text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800"
-                        >
-                            Write a Post
-                        </Link>
-                    )}
                 </div>
 
                 <hr />
